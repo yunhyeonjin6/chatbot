@@ -5,7 +5,7 @@ import requests
 import os
 
 # BASE_API_URL = 'http://192.168.0.7:8080'
-BASE_API_URL = 'https://ed2b-175-197-237-141.ngrok-free.app'
+BASE_API_URL = 'https://a59e-175-197-237-141.ngrok-free.app'
 
 class TzzimAPI:
     def __init__(self):
