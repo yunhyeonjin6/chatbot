@@ -52,11 +52,6 @@ if customer_answer := audiorecorder('🚏', '◼'):
             customer_answer = result.get('segments', [])[0]['text']
         except:
             customer_answer = ' '
-# 음성) 여기까지 
-    st.session_state.messages.append({"role": "user", "content": customer_answer})
-    with st.chat_message("user"):
-        st.write(customer_answer) # user 답변 바로 표기
-    st.session_state.dialogue[-1] += f'사용자:{customer_answer}' # dialogue 한 element 형식: [question]\n:[customer_answer]
 
 
 # 3-2. 답변; 모든 경우에 대해 response 변수를 채우기
@@ -100,3 +95,8 @@ if st.session_state.messages[-1]["role"] != "assistant":
     
 
 
+# 음성) 여기까지 
+    st.session_state.messages.append({"role": "user", "content": customer_answer})
+    with st.chat_message("user"):
+        st.write(customer_answer) # user 답변 바로 표기
+    st.session_state.dialogue[-1] += f'사용자:{customer_answer}' # dialogue 한 element 형식: [question]\n:[customer_answer]
