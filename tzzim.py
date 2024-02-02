@@ -14,7 +14,6 @@ ta = TzzimAPI()
 # 데이터
 club_info_list = ta.get_clubInfoList()
 # self.data_search = ta.get_dateSearch()
-num_call_timeSearch = 0
 
 class Tzzim():
     def __init__(self):
@@ -989,43 +988,52 @@ class DataFilter:
             dates = [start_date.strftime("%Y-%m-%d")]
         
         return dates
+    def time_search_local(self, filtered_data_raw:list[dict], date:str, club_list:str, start_time:str, end_time:str):
+        club_list:list = [self.club_eng_kor[an_eng_club] for an_eng_club in club_list.split(',')]
+        start_time = datetime.strptime(start_time, "%H").time() if start_time else None
+        end_time = datetime.strptime(end_time, "%H").time() if end_time else None
+        # start_time, end_time의 경우의 수: (value, value), (value, None), (None, value), (None, None)
+            
+        filtered_data = list()
+        for a_dict in filtered_data_raw:
+            if (a_dict['day'] == date) and (
+                a_dict['GC_name'] in club_list
+            ):  
+                copied_dict = copy.deepcopy(a_dict)
+                if not start_time and not end_time:
+                    copied_dict['frame_list'] = a_dict['frame_list']
+                else:
+                    filtered_frame_list = list()
+                    for frame_string in a_dict['frame_list']:
+                        a_frame = datetime.strptime(frame_string, "%H:%M").time()
+                        if start_time and end_time and (start_time < a_frame < end_time):
+                            filtered_frame_list.append(frame_string)
+                        elif start_time and not end_time and (a_frame > start_time):
+                            filtered_frame_list.append(frame_string)
+                        elif not start_time and end_time and (a_frame < end_time):
+                            filtered_frame_list.append(frame_string)
+                            
+                    if filtered_frame_list:
+                        copied_dict['frame_list'] = filtered_frame_list
+                    else:
+                        continue
 
+                filtered_data.append(copied_dict)
+        
+        return filtered_data
+        
     def tzzim_time_search(self, date:str, club_list:str, start_time:str, end_time:str): 
-        if not ta.use_sample_data:
-            input = {"date":  date, "club_list": club_list, "start_time" : start_time, "end_time": end_time}
-            if (st.session_state.data) and (num_call_timeSearch):
+        if ta.use_sample_data:
+            if st.session_state.data:
                 filtered_data_raw = st.session_state.data
-                club_list:list = [self.club_eng_kor[an_eng_club] for an_eng_club in club_list.split(',')]
-                start_time = datetime.strptime(start_time, "%H").time() if start_time else None
-                end_time = datetime.strptime(end_time, "%H").time() if end_time else None
-                # start_time, end_time의 경우의 수: (value, value), (value, None), (None, value), (None, None)
-                    
-                filtered_data = list()
-                for a_dict in filtered_data_raw:
-                    if (a_dict['day'] == date) and (
-                        a_dict['GC_name'] in club_list
-                    ):  
-                        copied_dict = copy.deepcopy(a_dict)
-                        if not start_time and not end_time:
-                            copied_dict['frame_list'] = a_dict['frame_list']
-                        else:
-                            filtered_frame_list = list()
-                            for frame_string in a_dict['frame_list']:
-                                a_frame = datetime.strptime(frame_string, "%H:%M").time()
-                                if start_time and end_time and (start_time < a_frame < end_time):
-                                    filtered_frame_list.append(frame_string)
-                                elif start_time and not end_time and (a_frame > start_time):
-                                    filtered_frame_list.append(frame_string)
-                                elif not start_time and end_time and (a_frame < end_time):
-                                    filtered_frame_list.append(frame_string)
-                                    
-                            if filtered_frame_list:
-                                copied_dict['frame_list'] = filtered_frame_list
-                            else:
-                                continue
-
-                        filtered_data.append(copied_dict)
+            else:    
+                filtered_data_raw = ta.get_timeSearch(input=dict())
+            filtered_data = self.time_search_local(filtered_data_raw, date, club_list, start_time, end_time)
+        else:
+            if (st.session_state.data) and (self.num_call_timeSearch):
+                filtered_data = self.time_search_local(st.session_state.data, date, club_list, start_time, end_time)
             else:
+                input = {"date":  date, "club_list": club_list, "start_time" : start_time, "end_time": end_time}
                 filtered_data = ta.get_timeSearch(input=input)
                 self.num_call_timeSearch += 1
                 
