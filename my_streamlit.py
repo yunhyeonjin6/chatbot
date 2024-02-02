@@ -43,11 +43,11 @@ if customer_answer := audiorecorder('🚏', '◼'):
         now = datetime.now()
         now = str(now).split(".")[0].replace("-","").replace(" ","_").replace(":","")
         # audio_file = "stt/{}.wav".format(now)
-        # customer_answer.export(audio_file, format="wav")
-        path = r"C:\Users\mnemosyne\Desktop\teezzim\ai_chatbot_0201\stt\20240201_235016.wav"
+        audio_file = r"C:\Users\mnemosyne\Desktop\teezzim\ai_chatbot_0201\stt\20240201_235016.wav"
+        customer_answer.export(audio_file, format="wav")
 
         try:
-            stt_res = STT_model.req_upload(file=path, completion='sync')
+            stt_res = STT_model.req_upload(file=audio_file, completion='sync')
             result = stt_res.json()
             customer_answer = result.get('segments', [])[0]['text']
         except:
