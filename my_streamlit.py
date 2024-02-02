@@ -42,8 +42,8 @@ if customer_answer := audiorecorder('🚏', '◼'):
         # To save audio to a file, use pydub export method:
         now = datetime.now()
         now = str(now).split(".")[0].replace("-","").replace(" ","_").replace(":","")
-        # audio_file = "stt/{}.wav".format(now)
-        # customer_answer.export(audio_file, format="wav")
+        audio_file = "stt/{}.wav".format(now)
+        customer_answer.export(audio_file, format="wav")
 
         # try:
         #     stt_res = STT_model.req_upload(file=audio_file, completion='sync')
