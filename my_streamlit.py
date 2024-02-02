@@ -42,15 +42,16 @@ if customer_answer := audiorecorder('🚏', '◼'):
         # To save audio to a file, use pydub export method:
         now = datetime.now()
         now = str(now).split(".")[0].replace("-","").replace(" ","_").replace(":","")
-        audio_file = "stt/{}.wav".format(now)
-        customer_answer.export(audio_file, format="wav")
+        # audio_file = "stt/{}.wav".format(now)
+        # customer_answer.export(audio_file, format="wav")
+        path = r"C:\Users\mnemosyne\Desktop\teezzim\ai_chatbot_0201\stt\20240201_235016.wav"
 
-        # try:
-        #     stt_res = STT_model.req_upload(file=audio_file, completion='sync')
-        #     result = stt_res.json()
-        #     customer_answer = result.get('segments', [])[0]['text']
-        # except:
-        #     customer_answer = ' '
+        try:
+            stt_res = STT_model.req_upload(file=path, completion='sync')
+            result = stt_res.json()
+            customer_answer = result.get('segments', [])[0]['text']
+        except:
+            customer_answer = ' '
 # 음성) 여기까지 
     st.session_state.messages.append({"role": "user", "content": customer_answer})
     with st.chat_message("user"):
