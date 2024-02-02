@@ -32,32 +32,31 @@ for message in st.session_state.messages:
 # # 챗봇)
 # if customer_answer := st.chat_input("티찜 AI에게 부탁하세요! ex) 골프장 예약", disabled=st.session_state.stop_input):
 
-# 24.02.02 기존 음성 코드
-# # 음성)
-# if customer_answer := audiorecorder('🚏', '◼'):
+# 24.02.02 수정된 음성 코드
+# 음성)
+if customer_answer := audiorecorder('🚏', '◼'):
     
-#     if not customer_answer.empty():
-#         # To play audio in frontend:
-#         # st.audio(customer_answer.export().read())  
+    if not customer_answer.empty():
+        # To play audio in frontend:
+        # st.audio(customer_answer.export().read())  
 
-#         # To save audio to a file, use pydub export method:
-#         now = datetime.now()
-#         now = str(now).split(".")[0].replace("-","").replace(" ","_").replace(":","")
-#         audio_file = "stt/{}.wav".format(now)
-#         customer_answer.export(audio_file, format="wav")
+        # To save audio to a file, use pydub export method:
+        now = datetime.now()
+        now = str(now).split(".")[0].replace("-","").replace(" ","_").replace(":","")
+        audio_file = "stt/{}.wav".format(now)
+        customer_answer.export(audio_file, format="wav")
 
-#         try:
-#             stt_res = STT_model.req_upload(file=audio_file, completion='sync')
-#             result = stt_res.json()
-#             customer_answer = result.get('segments', [])[0]['text']
-#         except:
-#             customer_answer = ' '
-# # 음성) 여기까지 
-#     st.session_state.messages.append({"role": "user", "content": customer_answer})
-#     with st.chat_message("user"):
-#         st.write(customer_answer) # user 답변 바로 표기
-#     st.session_state.dialogue[-1] += f'사용자:{customer_answer}' # dialogue 한 element 형식: [question]\n:[customer_answer]
-
+        try:
+            stt_res = STT_model.req_upload(file=audio_file, completion='sync')
+            result = stt_res.json()
+            customer_answer = result.get('segments', [])[0]['text']
+        except:
+            customer_answer = ' '
+# 음성) 여기까지 
+    st.session_state.messages.append({"role": "user", "content": customer_answer})
+    with st.chat_message("user"):
+        st.write(customer_answer) # user 답변 바로 표기
+    st.session_state.dialogue[-1] += f'사용자:{customer_answer}' # dialogue 한 element 형식: [question]\n:[customer_answer]
 
 
 # 3-2. 답변; 모든 경우에 대해 response 변수를 채우기
@@ -101,28 +100,3 @@ if st.session_state.messages[-1]["role"] != "assistant":
     
 
 
-# 24.02.02 수정된 음성 코드
-# 음성)
-if customer_answer := audiorecorder('🚏', '◼'):
-    
-    if not customer_answer.empty():
-        # To play audio in frontend:
-        # st.audio(customer_answer.export().read())  
-
-        # To save audio to a file, use pydub export method:
-        now = datetime.now()
-        now = str(now).split(".")[0].replace("-","").replace(" ","_").replace(":","")
-        audio_file = "stt/{}.wav".format(now)
-        customer_answer.export(audio_file, format="wav")
-
-        try:
-            stt_res = STT_model.req_upload(file=audio_file, completion='sync')
-            result = stt_res.json()
-            customer_answer = result.get('segments', [])[0]['text']
-        except:
-            customer_answer = ' '
-# 음성) 여기까지 
-    st.session_state.messages.append({"role": "user", "content": customer_answer})
-    with st.chat_message("user"):
-        st.write(customer_answer) # user 답변 바로 표기
-    st.session_state.dialogue[-1] += f'사용자:{customer_answer}' # dialogue 한 element 형식: [question]\n:[customer_answer]
