@@ -2,7 +2,7 @@ import json
 import streamlit as st
 import re
 import requests
-
+import os
 
 # BASE_API_URL = 'http://192.168.0.7:8080'
 BASE_API_URL = 'https://ed2b-175-197-237-141.ngrok-free.app'
@@ -10,7 +10,9 @@ BASE_API_URL = 'https://ed2b-175-197-237-141.ngrok-free.app'
 class TzzimAPI:
     def __init__(self):
         self.use_sample_data = False # 현진님) 테스트 시 self.use_sample_data = False로 전환
-        with open(r"C:\Users\mnemosyne\Desktop\teezzim\ai_chatbot_0131\data.json", "r", encoding='utf-8') as file:
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        data_file_path = os.path.join(current_directory, "data.json")
+        with open(data_file_path, "r", encoding='utf-8') as file:
             self.sample_data = json.load(file)
         
     def json_to_data(self, json_string):
