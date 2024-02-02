@@ -32,7 +32,6 @@ for message in st.session_state.messages:
 # # 챗봇)
 # if customer_answer := st.chat_input("티찜 AI에게 부탁하세요! ex) 골프장 예약", disabled=st.session_state.stop_input):
 
-# 24.02.02 수정된 음성 코드
 # 음성)
 if customer_answer := audiorecorder('🚏', '◼'):
     
@@ -52,13 +51,11 @@ if customer_answer := audiorecorder('🚏', '◼'):
             customer_answer = result.get('segments', [])[0]['text']
         except:
             customer_answer = ' '
-
-    # 음성) 여기까지 
+# 음성) 여기까지 
     st.session_state.messages.append({"role": "user", "content": customer_answer})
     with st.chat_message("user"):
         st.write(customer_answer) # user 답변 바로 표기
     st.session_state.dialogue[-1] += f'사용자:{customer_answer}' # dialogue 한 element 형식: [question]\n:[customer_answer]
-
 
 # 3-2. 답변; 모든 경우에 대해 response 변수를 채우기
 if st.session_state.messages[-1]["role"] != "assistant":
@@ -78,7 +75,7 @@ if st.session_state.messages[-1]["role"] != "assistant":
         # 예약 정보를 받는 단계
         else:
             response = tzzim.response_generation(dialogue)
-
+            
     # # 디버깅용: 활성화 시 대화문 중복해서 뜨지만 비활성화 시 뜨지 않음
     # st.write(f"dialogue: {dialogue}") ## 누적된 대화추적, 질문 생성 전까지의 대화내역 표시
     st.write('대화내역에서 NER을 한 json 데이터 (ChatGPT):')
@@ -98,7 +95,3 @@ if st.session_state.messages[-1]["role"] != "assistant":
     st.session_state.dialogue.append(f"티찜AI:{question}\n") ##
 # except:
 #     st.write(st.session_state.json_condition)
-    
-
-
-
