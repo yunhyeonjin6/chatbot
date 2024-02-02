@@ -1,0 +1,23 @@
+<h2>getDataFromAndroid</h2>
+<script>
+  function getDataFromAndroid() {
+    return new Promise((resolve, reject) => {
+      if (window.AndroidBridge) {
+        resolve(window.AndroidBridge.getData());
+        console.log("111");
+      } else {
+        reject("No data");
+        console.log("222");
+      }
+    });
+  }
+  getDataFromAndroid()
+    .then((data) => {
+      console.log("data : ", data);
+      localStorage.setItem("myKey", data);
+      console.log(localStorage.getItem("myKey"));
+    })
+    .catch((error) => {
+      console.log("error!!! ", error);
+    });
+</script>
