@@ -73,6 +73,12 @@ if st.session_state.messages[-1]["role"] != "assistant":
         else:
             response = tzzim.response_generation(dialogue)
             
+    # 음성) 여기까지 
+    st.session_state.messages.append({"role": "user", "content": customer_answer})
+    with st.chat_message("user"):
+        st.write(customer_answer) # user 답변 바로 표기
+    st.session_state.dialogue[-1] += f'사용자:{customer_answer}' # dialogue 한 element 형식: [question]\n:[customer_answer]
+    
     # # 디버깅용: 활성화 시 대화문 중복해서 뜨지만 비활성화 시 뜨지 않음
     # st.write(f"dialogue: {dialogue}") ## 누적된 대화추적, 질문 생성 전까지의 대화내역 표시
     st.write('대화내역에서 NER을 한 json 데이터 (ChatGPT):')
@@ -95,8 +101,4 @@ if st.session_state.messages[-1]["role"] != "assistant":
     
 
 
-# 음성) 여기까지 
-    st.session_state.messages.append({"role": "user", "content": customer_answer})
-    with st.chat_message("user"):
-        st.write(customer_answer) # user 답변 바로 표기
-    st.session_state.dialogue[-1] += f'사용자:{customer_answer}' # dialogue 한 element 형식: [question]\n:[customer_answer]
+
