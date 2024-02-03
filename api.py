@@ -54,7 +54,7 @@ class TzzimAPI:
             club_info_list:list[dict] = self.sample_data['clubInfoList']['data']
             
         else:# FastAPI 호출 시
-            json_string = requests.post(BASE_API_URL + "/reservation") # FastAPI 함수배치
+            json_string = requests.post(BASE_API_URL + "/clubInfoList") # FastAPI 함수배치
             club_info_list = self.json_to_data(json_string)
   
         return club_info_list
