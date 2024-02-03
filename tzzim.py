@@ -17,7 +17,7 @@ club_info_list = ta.get_clubInfoList()
 
 class Tzzim():
     def __init__(self):
-        openai.api_key = "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" # openai의 api-key (구글 dahae@ellexi.com 계정) 
+        openai.api_key = "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" # openai의 api-key (구글 dahae@ellexi.com 계정) 
 
         self.clubinfo_column_mapping = {
             'location': 'location',

@@ -5,7 +5,8 @@ import requests
 import os
 
 # BASE_API_URL = 'http://192.168.0.7:8080'
-BASE_API_URL = 'https://a59e-175-197-237-141.ngrok-free.app'
+# BASE_API_URL = 'https://a59e-175-197-237-141.ngrok-free.app'
+BASE_API_URL = 'http://172.30.1.100:8080'
 
 class TzzimAPI:
     def __init__(self):
@@ -53,7 +54,7 @@ class TzzimAPI:
             club_info_list:list[dict] = self.sample_data['clubInfoList']['data']
             
         else:# FastAPI 호출 시
-            json_string = requests.post(BASE_API_URL + "/clubInfoList") # FastAPI 함수배치
+            json_string = requests.post(BASE_API_URL + "/reservation") # FastAPI 함수배치
             club_info_list = self.json_to_data(json_string)
   
         return club_info_list
