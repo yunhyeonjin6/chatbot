@@ -1,5 +1,6 @@
 import copy
 from datetime import datetime, timedelta, time
+from dotenv import dotenv_values
 from gtts import gTTS
 import base64
 import openai
@@ -14,10 +15,12 @@ ta = TzzimAPI()
 # 데이터
 club_info_list = ta.get_clubInfoList()
 # self.data_search = ta.get_dateSearch()
+# api key
+env = dotenv_values("./.env")
 
 class Tzzim():
     def __init__(self):
-        openai.api_key = "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" # openai의 api-key (구글 dahae@ellexi.com 계정) 
+        openai.api_key = env['OpenaiApiKey'] # openai의 api-key (구글 dahae@ellexi.com 계정) 
 
         self.clubinfo_column_mapping = {
             'location': 'location',
