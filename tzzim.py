@@ -1027,15 +1027,23 @@ class DataFilter:
         
     def tzzim_time_search(self, date:str, club_list:str, start_time:str, end_time:str): 
         if ta.use_sample_data:
+            print('case_1_sample_data')
             if st.session_state.data:
+                print('case_1_1')
                 filtered_data_raw = st.session_state.data
-            else:    
+            else:
+                print('case_1_2')
                 filtered_data_raw = ta.get_timeSearch(input=dict())
             filtered_data = self.time_search_local(filtered_data_raw, date, club_list, start_time, end_time)
         else:
+            print('case_2_api_data')
+            print('st.ss.data: ', st.session_state.data)
+            print('num_time_search: ', self.num_call_timeSearch)
             if (st.session_state.data) and (self.num_call_timeSearch):
+                print('case_2_1')
                 filtered_data = self.time_search_local(st.session_state.data, date, club_list, start_time, end_time)
             else:
+                print('case_2_2')
                 input = {"date":  date, "club_list": club_list, "start_time" : start_time, "end_time": end_time}
                 filtered_data = ta.get_timeSearch(input=input)
                 self.num_call_timeSearch += 1
